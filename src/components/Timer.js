@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 const leftZero = (val)=>{
   if (val < 10) return '0'+`${val}`
   return val
@@ -13,14 +12,15 @@ class Timer extends Component {
 
         this.state = {
             count: 1,
-            endCount: 1500,
+            endCount: 5,
             timer: "25:00",
-            ciclos: 0    
+            ciclos: 0,   
         }
         
         this.start = this.start.bind(this)
         this.stop = this.stop.bind(this)
         this.reset = this.reset.bind(this)
+        
       
     }
   render() {
@@ -41,6 +41,10 @@ class Timer extends Component {
           <button>Start</button>
           <button>Stop</button>
           <button>Reset</button>
+
+          <audio className="sound">
+            <source src="https://api.coderrocketfuel.com/assets/pomodoro-times-up.mp3"></source>
+          </audio>
         </div>
     )
   }
@@ -48,10 +52,11 @@ class Timer extends Component {
     
     this.interval = setInterval(()=>{
       if (this.state.count === this.state.endCount +1) {
-        clearInterval(this.interval)
+        this.playSound()
+        clearInterval(this.interval)        
         this.setState({
-          count: 0
-        })
+          count: 1
+        })  
       } else {      
         this.setState({
           count: this.state.count + 1,
@@ -69,8 +74,8 @@ class Timer extends Component {
   reset(){
     clearInterval(this.interval)
     this.setState({
-      count: 0,
-      timer: '00:00'
+      count: 1,
+      timer: '25:00'
     })
   }
   
@@ -80,6 +85,11 @@ class Timer extends Component {
     
     return leftZero(minutos) + ':' + leftZero(segundos)
     
+  }
+   
+  playSound(){
+    const sound = document.getElementsByClassName("sound")[0]
+    sound.play()  
   }
 }
 
