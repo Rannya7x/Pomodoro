@@ -12,15 +12,15 @@ class Timer extends Component {
         super()
 
         this.state = {
-            count: 0,
-            endCount: 4,
+            count: 1,
+            endCount: 1500,
             timer: "25:00",
-            iniciado: false
+            ciclos: 0    
         }
-        this.interval = 0
+        
         this.start = this.start.bind(this)
-        this.stop = this.start.bind(this)
-        this.endCiclo = this.start.bind(this)
+        this.stop = this.stop.bind(this)
+        this.reset = this.reset.bind(this)
       
     }
   render() {
@@ -32,7 +32,7 @@ class Timer extends Component {
           </h2>
           <button onClick={this.start}>Start</button>
           <button onClick={this.stop}>Stop</button>
-          <button>Reset</button>
+          <button onClick={this.reset}>Reset</button>
 
           <h1>Intervalo</h1>
           <h2>
@@ -47,13 +47,12 @@ class Timer extends Component {
   start(){
     
     this.interval = setInterval(()=>{
-      if (this.state.count === this.state.endCount + 1) {
+      if (this.state.count === this.state.endCount +1) {
         clearInterval(this.interval)
         this.setState({
-          
           count: 0
         })
-      }else{      
+      } else {      
         this.setState({
           count: this.state.count + 1,
           timer: this.conversor( this.state.endCount - this.state.count)  
@@ -65,8 +64,14 @@ class Timer extends Component {
 
   }
   stop(){
-    
-
+    clearInterval(this.interval)   
+  }
+  reset(){
+    clearInterval(this.interval)
+    this.setState({
+      count: 0,
+      timer: '00:00'
+    })
   }
   
   conversor(seg){
